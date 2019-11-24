@@ -13,13 +13,11 @@ public class SafeCopier extends Copier {
 
     public void run() {
         while (stringIterator.hasNext()) {
-            System.out.println(Thread.currentThread().getName() + " "
-                    + stringIterator.next());
-        }
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            System.out.println("MAIN INTERRUPTED");
+
+            synchronized (this) {
+                copied += stringIterator.next() + " ";
+            }
+
         }
     }
 }
