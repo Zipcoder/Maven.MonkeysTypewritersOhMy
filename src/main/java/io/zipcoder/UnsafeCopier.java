@@ -14,8 +14,6 @@ public class UnsafeCopier extends Copier {
         Random random = new Random();
         int randomSleep = random.nextInt((100-50)+1)+50;
         while (stringIterator.hasNext()) {
-
-
             try {
                 String holder = stringIterator.next() + " ";
                 Thread.sleep(randomSleep);

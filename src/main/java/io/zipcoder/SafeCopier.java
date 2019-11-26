@@ -8,7 +8,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * correctly every time.  Make the run method thread safe.
  */
 public class SafeCopier extends Copier {
-
+   private ReentrantLock lock = new ReentrantLock();
 
     public SafeCopier(String toCopy) {
         super(toCopy);
@@ -17,29 +17,27 @@ public class SafeCopier extends Copier {
     public void run() {
         Random random = new Random();
         int randomSleep = random.nextInt((100 - 50) + 1) + 50;
-        ReentrantLock lock = new ReentrantLock();
+
 
         while (stringIterator.hasNext()) {
-            lock.lock();
+
             try {
                 //Do some work
                 {
                     synchronized (stringIterator) {
+                       // lock.lock();
                         String holder = stringIterator.next() + " ";
-                        Thread.sleep(randomSleep);
+                        Thread.sleep(new Random().nextInt(50));
+                        System.out.println(Thread.currentThread().getName());
                         copied += holder;
                     }
                 }
             } catch (Exception e) {
-
+/*
             } finally {
-                lock.unlock();
+                lock.unlock();*/
             }
-
         }
-
-
         copied = copied.trim();
-
     }
 }
