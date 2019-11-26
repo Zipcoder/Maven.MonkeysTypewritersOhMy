@@ -29,12 +29,13 @@ public class MonkeyTypewriter {
         SafeCopier safeCopier = new SafeCopier(introduction);
 
         for (int index = 0; index < 5; index++) {
+            for(int i = 6; i < 16; i++) {
+                Thread unsafe = new Thread(unsafeCopier);
+                unsafe.start();
 
-            Thread unsafe = new Thread(unsafeCopier);
-            unsafe.start();
-
-            Thread safe = new Thread(safeCopier);
-            safe.start();
+                Thread safe = new Thread(safeCopier);
+                safe.start();
+            }
         }
 
         // This wait is here because main is still a thread and we want the main method to print the finished copies
@@ -46,8 +47,9 @@ public class MonkeyTypewriter {
         }
 
         // Print out the copied versions here.
-        System.out.println("Unsafe Copy :\n\n" + unsafeCopier.copied + "\n\n\n");
-        System.out.println("Safe Copy: \n\n" + safeCopier.copied);
+
+        System.out.println("Unsafe Copy :\n\n" + unsafeCopier.copied + "\n Difference : " + unsafeCopier.copied.length() + " original : " + introduction.length() + "\n\n");
+        System.out.println("Safe Copy: \n\n" + safeCopier.copied + "\n Difference : " + safeCopier.copied.length() + " original : " + introduction.length() );
     }
 
 }
