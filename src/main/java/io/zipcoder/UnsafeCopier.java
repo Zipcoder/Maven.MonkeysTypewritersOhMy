@@ -12,7 +12,7 @@ public class UnsafeCopier extends Copier {
 
     public void run() {
         Random random = new Random();
-        int randomSleep = random.nextInt((175-50)+1)+50;
+        int randomSleep = random.nextInt((100-50)+1)+50;
         while (stringIterator.hasNext()) {
 
 
@@ -23,6 +23,7 @@ public class UnsafeCopier extends Copier {
             } catch (InterruptedException e) {
                 System.out.println("MAIN INTERRUPTED");
             }
+            System.out.println(Thread.currentThread().getName());
 
         }
 

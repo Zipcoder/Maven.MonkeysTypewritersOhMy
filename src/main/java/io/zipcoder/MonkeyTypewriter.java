@@ -1,6 +1,7 @@
 package io.zipcoder;
 
 public class MonkeyTypewriter {
+
     public static void main(String[] args) {
         String introduction = "It was the best of times,\n" +
                 "it was the blurst of times,\n" +
@@ -37,7 +38,7 @@ public class MonkeyTypewriter {
         monkey5.start();
 
 
-        try {
+       try {
             monkey1.join();
             monkey2.join();
             monkey3.join();
@@ -51,7 +52,6 @@ public class MonkeyTypewriter {
 
 
 
-
         // This wait is here because main is still a thread and we want the main method to print the finished copies
         // after enough time has passed.
         try {
@@ -59,9 +59,11 @@ public class MonkeyTypewriter {
         } catch (InterruptedException e) {
             System.out.println("MAIN INTERRUPTED");
         }
-        //System.out.println(safe.copied);
-        if(pageMatcher(safe.copied,introduction)){
+        System.out.println(safe.copied);
+        if(pageMatcher(safe.copied,introduction)) {
             System.out.println("A Match!");
+        }else{
+            System.out.println("Unsuccesful Copy");
         }
         // Print out the copied versions here.
     }

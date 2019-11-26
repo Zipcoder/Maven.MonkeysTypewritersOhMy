@@ -16,33 +16,30 @@ public class SafeCopier extends Copier {
 
     public void run() {
         Random random = new Random();
-        int randomSleep = random.nextInt((200 - 50) + 1) + 50;
+        int randomSleep = random.nextInt((100 - 50) + 1) + 50;
         ReentrantLock lock = new ReentrantLock();
 
         while (stringIterator.hasNext()) {
             lock.lock();
             try {
-
                 //Do some work
-
-
-
-                synchronized (stringIterator) {
-                    String holder = stringIterator.next() + " ";
-                    Thread.sleep(randomSleep);
-                    copied += holder;
-                    System.out.println(Thread.currentThread().getName());
+                {
+                    synchronized (stringIterator) {
+                        String holder = stringIterator.next() + " ";
+                        Thread.sleep(randomSleep);
+                        copied += holder;
+                    }
                 }
-                } catch(Exception e){
+            } catch (Exception e) {
 
-                } finally{
-                    lock.unlock();
-                }
-
+            } finally {
+                lock.unlock();
             }
 
-
-            copied = copied.trim();
-
         }
+
+
+        copied = copied.trim();
+
     }
+}
