@@ -26,8 +26,8 @@ public class MonkeyTypewriter {
 
         final int MAXThreads = 16;
 
+        UnsafeCopier unsafe = new UnsafeCopier(introduction);
         for(int MAX = 3; MAX < MAXThreads; MAX++){
-            UnsafeCopier unsafe = new UnsafeCopier(introduction);
             Thread[] threads = new Thread[MAXThreads];
             for(int i = 0; i < MAXThreads; i++) {
                 threads[i] = new Thread(unsafe);
@@ -37,6 +37,8 @@ public class MonkeyTypewriter {
             }
 
         }
+
+        //SafeCopier safe = new SafeCopier(introduction);
 
 
         // This wait is here because main is still a thread and we want the main method to print the finished copies
@@ -48,5 +50,7 @@ public class MonkeyTypewriter {
         }
 
         // Print out the copied versions here.
+        System.out.println("Unsafe:\n" + unsafe.copied);
+        //System.out.println("Safe:\n" + safe.copied);
     }
 }
