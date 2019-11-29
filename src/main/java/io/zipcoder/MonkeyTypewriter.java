@@ -1,9 +1,11 @@
 package io.zipcoder;
 
+import java.util.Random;
+
 public class MonkeyTypewriter {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         String introduction = "It was the best of times,\n" +
-                "it was the blurst of times,\n" +
+                "it was the worst of times,\n" +
                 "it was the age of wisdom,\n" +
                 "it was the age of foolishness,\n" +
                 "it was the epoch of belief,\n" +
@@ -24,6 +26,39 @@ public class MonkeyTypewriter {
         // For each Copier(one safe and one unsafe), create and start 5 monkeys copying the introduction to
         // A Tale Of Two Cities.
 
+        final int MAXThreads = 16;
+
+        UnsafeCopier unsafe = new UnsafeCopier(introduction);
+        SafeCopier safe = new SafeCopier(introduction);
+
+        for(int MAX = 3; MAX < MAXThreads; MAX++){
+            Thread[] threads = new Thread[MAXThreads];
+            for(int i = 0; i < MAXThreads; i++) {
+                threads[i] = new Thread(unsafe);
+            }
+            for(int i = 0; i < MAXThreads; i++) {
+                threads[i].start();
+            }
+
+        }
+
+        for(int MAX = 3; MAX < MAXThreads; MAX++){
+            Thread[] threads = new Thread[MAXThreads];
+            for(int i = 0; i < MAXThreads; i++) {
+                threads[i] = new Thread(safe);
+            }
+            for(int i = 0; i < MAXThreads; i++) {
+                threads[i].start();
+            }
+
+            for(int i = 0; i < MAXThreads; i++){
+                threads[i].join();
+            }
+
+        }
+
+        //SafeCopier safe = new SafeCopier(introduction);
+
 
         // This wait is here because main is still a thread and we want the main method to print the finished copies
         // after enough time has passed.
@@ -34,5 +69,8 @@ public class MonkeyTypewriter {
         }
 
         // Print out the copied versions here.
+        System.out.println("Unsafe:\n" + unsafe.copied);
+        System.out.println("-------------------------------------------------------");
+        System.out.println("Safe:\n" + safe.copied);
     }
 }
