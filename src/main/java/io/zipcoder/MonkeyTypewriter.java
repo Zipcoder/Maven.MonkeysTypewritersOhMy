@@ -1,11 +1,15 @@
 package io.zipcoder;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MonkeyTypewriter {
-    public static void main(String[] args) {
-        String introduction = "It was the best of times,\n" +
+    Copier copier;
+    Copier safeCopier;
+    String introduction;
+
+    public MonkeyTypewriter() {
+        this.introduction = "It was the best of times,\n" +
                 "it was the blurst of times,\n" +
                 "it was the age of wisdom,\n" +
                 "it was the age of foolishness,\n" +
@@ -23,32 +27,34 @@ public class MonkeyTypewriter {
                 "its noisiest authorities insisted on its being received, for good or for\n" +
                 "evil, in the superlative degree of comparison only.";
 
-        // Do all of the Monkey / Thread building here
-        // For each Copier(one safe and one unsafe), create and start 5 monkeys copying the introduction to
-        // A Tale Of Two Cities.
-        final int MAXThReAds = 16;
-        for (int max = 3; max <= MAXThReAds; max++){
-            //each test case
-            UnsafeCopier unsafe = new UnsafeCopier(introduction);
-            ArrayList<Thread> unsafeThreads = new ArrayList<>();
-            for(int i = 0; i < max; i++){
-                unsafeThreads.add(new Thread(unsafe));
-            }
-            for(int i = 0; i < max; i++){
-                unsafeThreads.get(i).start();
-            }
+        copier = new UnsafeCopier(introduction);
+        safeCopier = new SafeCopier(introduction);
+    }
+
+
+    public static void main(String[] args) {
+        MonkeyTypewriter mt = new MonkeyTypewriter();
+        mt.run();
+        System.out.println("\n\nUncoordinated Monkeys:\n\n" + mt.copier.copied);
+        System.out.println("\n\nCohorting Monkeys(5.2):\n\n" + mt.safeCopier.copied);
+        // Prints out copies
+    }
+
+
+    void run() {
+        List<Thread> uncoordinatedMonkeys = new ArrayList<Thread>();
+        List<Thread> coordinatedMonkeys = new ArrayList<Thread>();
+
+        for (int i = 0; i < 5; i++) {
+            uncoordinatedMonkeys.add(new Thread(this.copier));
+            coordinatedMonkeys.add(new Thread(this.safeCopier));
         }
-
-
-        // This wait is here because main is still a thread and we want the main method to print the finished copies
-        // after enough time has passed.
+        for (Thread monkey : uncoordinatedMonkeys) monkey.start();
+        for (Thread monkey : coordinatedMonkeys) monkey.start();
         try {
             Thread.sleep(1000);
-            System.out.println("***** UNSAFE THREAD");
-        } catch(InterruptedException e) {
+        } catch (InterruptedException e) {
             System.out.println("MAIN INTERRUPTED");
         }
-
-        // Print out the copied versions here.
     }
 }
