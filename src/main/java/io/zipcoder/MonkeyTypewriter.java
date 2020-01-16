@@ -23,7 +23,29 @@ public class MonkeyTypewriter {
         // Do all of the Monkey / Thread building here
         // For each Copier(one safe and one unsafe), create and start 5 monkeys copying the introduction to
         // A Tale Of Two Cities.
-
+            UnsafeCopier unsafe = new UnsafeCopier(introduction);
+           // unsafe.run(); one thread ran the program and printed the words
+        SafeCopier safe = new SafeCopier(introduction);
+        Thread monkey1 = new Thread(safe);//changeed from un safe to safe
+        Thread monkey2 = new Thread(safe);
+        Thread monkey3 = new Thread(safe);
+        Thread monkey4 = new Thread(safe);
+        Thread monkey5 = new Thread(safe);
+       monkey1.start();
+       monkey2.start();
+       monkey3.start();
+       monkey4.start();
+       monkey5.start();
+        try{
+            monkey1.join();
+            monkey2.join();
+            monkey3.join();
+            monkey4.join();
+            monkey5.join();
+        }
+        catch (InterruptedException ex){
+            ex.printStackTrace();
+        }
 
         // This wait is here because main is still a thread and we want the main method to print the finished copies
         // after enough time has passed.
@@ -34,5 +56,16 @@ public class MonkeyTypewriter {
         }
 
         // Print out the copied versions here.
+        System.out.println(safe.copied);
+        if(pageMatch(safe.copied,introduction)){
+            System.out.println("page matched successfully");
+        }
+        else{
+            System.out.println("failure");
+        }
+    }
+    public static Boolean pageMatch(String copy, String original){
+        return copy.equals(original);
+
     }
 }
